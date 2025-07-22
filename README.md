@@ -1,1 +1,1 @@
-# onedoc - Brings all your swagger docs into one place
+# OneDoc - Brings all your swagger docs into one place
