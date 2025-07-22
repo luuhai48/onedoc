@@ -1,0 +1,10 @@
+node_modules/
+.env
+.env.*
+output/
+.vscode/
+.gitignore
+.git/
+biome.json
+bitbucket-pipelines.yml
+READEME.md

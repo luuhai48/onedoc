@@ -1,0 +1,27 @@
+{
+  "name": "onedoc",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently -c \"bgGreen.bold,bgBlue.bold\" \"bun run dev:api\" \"bun run dev:worker\"",
+    "dev:api": "bun --env-file=../../.env --cwd packages/api dev",
+    "dev:worker": "bun --env-file=../../.env --cwd packages/worker dev",
+    "lint": "biome lint --diagnostic-level=error ./packages",
+    "format": "biome format --write --diagnostic-level=error ./packages"
+  },
+  "workspaces": {
+    "packages": ["packages/*"],
+    "catalog": {
+      "winston": "^3.17.0"
+    }
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.1.2",
+    "@types/bun": "latest",
+    "concurrently": "^9.2.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5.9.0-beta"
+  }
+}

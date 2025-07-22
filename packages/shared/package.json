@@ -1,0 +1,10 @@
+{
+  "name": "@onedoc/shared",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "winston": "catalog:"
+  }
+}

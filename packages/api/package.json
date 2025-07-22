@@ -1,0 +1,12 @@
+{
+  "name": "@onedoc/api",
+  "type": "module",
+  "scripts": {
+    "dev": "bun run --watch src/index.ts"
+  },
+  "dependencies": {
+    "@onedoc/shared": "workspace:*",
+    "hono": "^4.8.5",
+    "minimatch": "^10.0.3"
+  }
+}

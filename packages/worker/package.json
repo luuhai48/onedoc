@@ -1,0 +1,10 @@
+{
+  "name": "@onedoc/worker",
+  "type": "module",
+  "scripts": {
+    "dev": "bun run --watch src/index.ts"
+  },
+  "dependencies": {
+    "@onedoc/shared": "workspace:*"
+  }
+}
