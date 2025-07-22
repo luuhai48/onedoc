@@ -3,6 +3,7 @@ import { Hono } from 'hono';
 
 import { corsMiddleware } from './middlewares/cors.middleware';
 import { loggerMiddleware } from './middlewares/logger.middleware';
+import { staticMiddleware } from './middlewares/static.middleware';
 import { registerRoutes } from './routes';
 
 const env = getEnv('NODE_ENV');
@@ -14,6 +15,9 @@ app.use(loggerMiddleware);
 app.use('*', corsMiddleware);
 
 registerRoutes(app);
+
+app.get('*', staticMiddleware({ root: './web/dist' }));
+app.get('*', staticMiddleware({ path: './web/dist/index.html' }));
 
 const server = Bun.serve({
   port: parseInt(port),
