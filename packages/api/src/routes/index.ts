@@ -1,8 +1,8 @@
-import { getEnv } from '@onedoc/shared';
+import { service } from '@onedoc/shared';
 import { type Context, Hono } from 'hono';
 
-const listSwaggers = (c: Context) => {
-  const links = getEnv('SWAGGER_ENDPOINTS', '').split(',');
+const listSwaggers = async (c: Context) => {
+  const links = await service('swaggerService').list();
   return c.json(links);
 };
 

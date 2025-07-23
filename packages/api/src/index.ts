@@ -1,6 +1,5 @@
-import { getEnv, logger } from '@onedoc/shared';
+import { getEnv, logger, MongoService } from '@onedoc/shared';
 import { Hono } from 'hono';
-
 import { corsMiddleware } from './middlewares/cors.middleware';
 import { loggerMiddleware } from './middlewares/logger.middleware';
 import { staticMiddleware } from './middlewares/static.middleware';
@@ -19,21 +18,30 @@ registerRoutes(app);
 app.get('*', staticMiddleware({ root: './web/dist' }));
 app.get('*', staticMiddleware({ path: './web/dist/index.html' }));
 
-const server = Bun.serve({
-  port: parseInt(port),
-  fetch: app.fetch,
-  hostname: '0.0.0.0',
-  development: env !== 'production',
-});
+const bootstrap = async () => {
+  await MongoService.connect();
 
-const shutdown = async () => {
-  await new Promise<void>((resolve) => setTimeout(resolve, 100));
-  await server.stop();
-  logger.info('Shutdown complete');
-  process.exit(0);
+  logger.info('MongoDB connected');
 };
 
-process.on('SIGINT', shutdown);
-process.on('SIGTERM', shutdown);
+bootstrap().then(async () => {
+  const server = Bun.serve({
+    port: parseInt(port),
+    fetch: app.fetch,
+    hostname: '0.0.0.0',
+    development: env !== 'production',
+  });
 
-logger.info(`Running on http://localhost:${port}`);
+  const shutdown = async () => {
+    await MongoService.disconnect();
+
+    await server.stop();
+    logger.info('Shutdown complete');
+    process.exit(0);
+  };
+
+  process.on('SIGINT', shutdown);
+  process.on('SIGTERM', shutdown);
+
+  logger.info(`Running on http://localhost:${port}`);
+});

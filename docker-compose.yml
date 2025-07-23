@@ -8,7 +8,7 @@ services:
     environment:
       - MONGO_INITDB_ROOT_USERNAME=admin
       - MONGO_INITDB_ROOT_PASSWORD=Abcd1234
-      - MONGO_INITDB_DATABASE=local
+      - MONGO_INITDB_DATABASE=onedoc
     volumes:
       - localmongo:/data/db
 
