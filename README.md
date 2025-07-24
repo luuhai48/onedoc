@@ -10,6 +10,7 @@ OneDoc is a modern web application that consolidates multiple Swagger/OpenAPI do
 - **Modern UI**: Clean, responsive interface built with React and Tailwind CSS
 - **Real-time Updates**: Automatic detection and tracking of API changes
 - **Search & Filter**: Easily find and switch between different API endpoints
+- **CORS Proxy**: Built-in proxy endpoint to handle CORS issues when hosting on different domains
 
 ## 📸 Screenshots
 
@@ -156,6 +157,58 @@ The Docker Compose file provides a pre-configured MongoDB instance with:
 4. **Browse version history** to see changes over time
 5. **View diffs** between different versions of your APIs
 6. **Automatic monitoring**: The worker service automatically checks for API changes based on the configured schedule
+
+### CORS Proxy Feature
+
+OneDoc includes a comprehensive CORS proxy system to handle cross-origin requests when your application is hosted on a different domain than the Swagger endpoints. This solves CORS issues for both:
+
+1. **Swagger JSON fetching** - When loading the API documentation
+2. **API execution** - When users try to test API endpoints from within SwaggerUI
+
+This is particularly useful when:
+- Your OneDoc instance is hosted on `https://your-domain.com`
+- Your Swagger endpoints are on `https://api.example.com`
+- CORS policies prevent direct access from the browser
+
+**How it works:**
+- **Swagger JSON Proxy**: The frontend automatically uses `/api/v1/proxy/swagger` to fetch Swagger JSON
+- **API Call Proxy**: SwaggerUI is configured to route all API calls through `/api/v1/proxy/api`
+- **Request Interception**: The system intercepts API calls and routes them through the proxy
+- **Full Request Support**: Supports all HTTP methods, headers, and body content
+- **Security measures** include URL validation and protocol restrictions (HTTP/HTTPS only)
+- **Performance optimization** with caching for Swagger JSON
+
+**API Endpoints:**
+
+1. **Swagger JSON Proxy:**
+```
+GET /api/v1/proxy/swagger?url={encoded_swagger_url}
+```
+
+2. **API Call Proxy:**
+```
+ALL /api/v1/proxy/api?url={encoded_target_url}
+```
+
+**Examples:**
+```bash
+# Fetch Swagger JSON
+curl "http://localhost:3000/api/v1/proxy/swagger?url=https%3A//petstore.swagger.io/v2/swagger.json"
+
+# Execute API call (POST with body)
+curl -X POST "http://localhost:3000/api/v1/proxy/api?url=https%3A//petstore.swagger.io/v2/pet" \
+  -H "Content-Type: application/json" \
+  -d '{"name": "test", "status": "available"}'
+```
+
+**Features:**
+- **Complete CORS bypass** for both documentation and API calls
+- **All HTTP methods supported** (GET, POST, PUT, DELETE, PATCH, OPTIONS)
+- **Header forwarding** (except security-sensitive headers)
+- **Body content support** for all request types
+- **Response type handling** (JSON, text, binary)
+- **Error handling** with proper status codes
+- **Security validation** of target URLs
 
 ## 🧪 Development
 

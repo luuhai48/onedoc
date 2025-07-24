@@ -4,7 +4,7 @@ import { Loader2 } from 'lucide-react';
 import { parseAsString, useQueryState } from 'nuqs';
 import { useEffect, useState } from 'react';
 import SwaggerUI from 'swagger-ui-react';
-import { getSwaggerVersions } from '@/api/swagger';
+import { createSwaggerUIConfig, getSwaggerVersions } from '@/api/swagger';
 import { JsonVersionsHistory } from './json-versions-history';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './tabs';
 
@@ -69,7 +69,7 @@ export const SwaggerDetail = ({ endpoint }: { endpoint: SwaggerEndpointResponse 
         </TabsList>
 
         <TabsContent value="swagger">
-          <SwaggerUI url={endpoint.url} displayRequestDuration persistAuthorization />
+          <SwaggerUI {...createSwaggerUIConfig(endpoint.url)} />
         </TabsContent>
 
         <TabsContent value="history">
@@ -82,7 +82,7 @@ export const SwaggerDetail = ({ endpoint }: { endpoint: SwaggerEndpointResponse 
 
           {isLoadingVersions && (
             <div className="flex items-center justify-center h-full">
-              <Loader2 className="w-4 h-4 animate-spin text-muted-foreground" />
+              <Loader2 className="size-8 animate-spin text-muted-foreground" />
             </div>
           )}
         </TabsContent>
