@@ -8,3 +8,5 @@ output/
 biome.json
 bitbucket-pipelines.yml
 READEME.md
+screenshots/
+.github/

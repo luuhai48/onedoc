@@ -11,6 +11,14 @@ OneDoc is a modern web application that consolidates multiple Swagger/OpenAPI do
 - **Real-time Updates**: Automatic detection and tracking of API changes
 - **Search & Filter**: Easily find and switch between different API endpoints
 
+## 📸 Screenshots
+
+### Main Interface
+![OneDoc Main Interface](screenshots/1.png)
+
+### Version History and Diff View
+![OneDoc Version History](screenshots/2.png)
+
 ## 🏗️ Architecture
 
 OneDoc is built as a monorepo with the following components:
