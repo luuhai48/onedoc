@@ -5,6 +5,7 @@
     "dev": "bun run --watch src/index.ts"
   },
   "dependencies": {
-    "@onedoc/shared": "workspace:*"
+    "@onedoc/shared": "workspace:*",
+    "node-cron": "^4.2.1"
   }
 }
