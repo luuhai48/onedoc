@@ -3,16 +3,16 @@ import 'swagger-ui-react/swagger-ui.css';
 import { useQuery } from '@tanstack/react-query';
 import { parseAsString, useQueryState } from 'nuqs';
 import { useEffect, useMemo } from 'react';
-import SwaggerUI from 'swagger-ui-react';
 import { getListSwaggerEndpoints } from '@/api/swagger';
 import { Combobox } from '@/components/ui/combobox';
+import { SwaggerDetail } from '@/components/ui/swagger-detail';
 
 export const Route = createFileRoute('/')({
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  const [value, setValue] = useQueryState('url', parseAsString.withDefault('').withOptions({ history: 'push' }));
+  const [value, setValue] = useQueryState('endpoint', parseAsString.withDefault('').withOptions({ history: 'push' }));
 
   const { data, isLoading, error } = useQuery({
     queryKey: ['swagger-endpoints'],
@@ -53,7 +53,7 @@ function RouteComponent() {
         <Combobox options={options} value={value} onChange={setValue} />
       </div>
 
-      {selectedOption ? <SwaggerUI url={selectedOption.url} displayRequestDuration persistAuthorization /> : null}
+      {selectedOption ? <SwaggerDetail endpoint={selectedOption} /> : null}
     </section>
   );
 }

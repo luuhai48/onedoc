@@ -79,18 +79,27 @@ export class SwaggerService {
     });
   }
 
-  async listPatches(endpointId: string, filter: PaginationFilter) {
-    return this.swaggerPatchDao.getDocuments({
-      filter: {
-        endpointId,
-        ...(filter.afterId && { _id: { $gte: filter.afterId } }),
-        ...(filter.beforeId && { _id: { $lte: filter.beforeId } }),
-      },
-      sort: {
-        [filter.sort ?? '_id']: filter.order === 'asc' ? 1 : -1,
-      },
-      lean: true,
-    });
+  async listPatches(endpointId: string, { sort, order, page = 1, limit = 10 }: PaginationFilter) {
+    const [data, total] = await Promise.all([
+      await this.swaggerPatchDao.getDocuments({
+        filter: {
+          endpointId,
+        },
+        sort: {
+          [sort ?? '_id']: order === 'asc' ? 1 : -1,
+        },
+        skip: (page - 1) * limit,
+        limit,
+        lean: true,
+      }),
+      this.swaggerPatchDao.count({
+        filter: {
+          endpointId,
+        },
+      }),
+    ]);
+
+    return { data, total };
   }
 
   async getSwaggerVersionByPatchId(endpointId: string, patchId: string) {

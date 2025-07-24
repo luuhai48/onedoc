@@ -19,7 +19,8 @@
       "winston": "^3.17.0",
       "typescript": "^5.9.0-beta",
       "jsondiffpatch": "^0.7.3",
-      "zod": "^4.0.8"
+      "zod": "^4.0.8",
+      "date-fns": "^4.1.0"
     }
   },
   "devDependencies": {

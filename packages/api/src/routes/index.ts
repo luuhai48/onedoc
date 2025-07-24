@@ -24,16 +24,19 @@ export const registerRoutes = (app: Hono) => {
     zValidator('query', PaginationFilterSchema),
     async (c) => {
       const { id } = c.req.param();
-      const { sort, order, afterId, beforeId } = c.req.valid('query');
+      const { sort, order, limit, page } = c.req.valid('query');
 
-      const patches = await service('swaggerService').listPatches(id, {
+      const { data, total } = await service('swaggerService').listPatches(id, {
         sort,
         order,
-        afterId,
-        beforeId,
+        limit,
+        page,
       });
 
-      return c.json(patches);
+      return c.json({
+        data,
+        total,
+      });
     },
   );
 

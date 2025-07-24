@@ -1,6 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { createRootRoute, Outlet } from '@tanstack/react-router';
 import { NuqsAdapter } from 'nuqs/adapters/react';
+import { Toaster } from '@/components/ui/sonner';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -21,6 +22,7 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <NuqsAdapter>
         <Outlet />
+        <Toaster richColors closeButton duration={5000} />
       </NuqsAdapter>
     </QueryClientProvider>
   );
