@@ -5,8 +5,10 @@
     "dev": "bun run --watch src/index.ts"
   },
   "dependencies": {
+    "@hono/zod-validator": "^0.7.2",
     "@onedoc/shared": "workspace:*",
     "hono": "^4.8.5",
-    "minimatch": "^10.0.3"
+    "minimatch": "^10.0.3",
+    "zod": "catalog:"
   }
 }

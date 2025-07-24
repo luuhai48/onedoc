@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { parseAsString, useQueryState } from 'nuqs';
 import { useEffect, useMemo } from 'react';
 import SwaggerUI from 'swagger-ui-react';
-import { getListSwaggerUrls } from '@/api/swagger';
+import { getListSwaggerEndpoints } from '@/api/swagger';
 import { Combobox } from '@/components/ui/combobox';
 
 export const Route = createFileRoute('/')({
@@ -15,28 +15,28 @@ function RouteComponent() {
   const [value, setValue] = useQueryState('url', parseAsString.withDefault('').withOptions({ history: 'push' }));
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ['swagger-urls'],
-    queryFn: getListSwaggerUrls,
+    queryKey: ['swagger-endpoints'],
+    queryFn: getListSwaggerEndpoints,
   });
 
   const options = useMemo(() => {
-    return data?.map((url) => ({ value: url._id, label: url.name })) || [];
+    return data?.data?.map((url) => ({ value: url._id, label: url.name })) || [];
   }, [data]);
 
   const selectedOption = useMemo(() => {
-    return data?.find((url) => url._id === value);
+    return data?.data?.find((url) => url._id === value);
   }, [data, value]);
 
   useEffect(() => {
-    if (data?.length && !value?.trim()?.length) {
-      setValue(data[0]._id);
+    if (data?.data?.length && !value?.trim()?.length) {
+      setValue(data.data[0]._id);
     }
   }, [data, setValue, value]);
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
-  if (!data?.length) {
+  if (!data?.data?.length) {
     return (
       <div className="flex flex-col items-center justify-center h-full py-8">
         <h1 className="text-2xl font-bold">No endpoints found</h1>

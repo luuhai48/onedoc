@@ -1,5 +1,5 @@
 import { SwaggerService } from '../services/swagger';
-import { SwaggerDao } from '../services/swagger/swagger.dao';
+import { SwaggerDao } from '../services/swagger/swaggerEndpoint.dao';
 import { MongoService } from './mongo';
 
 type ServiceRegistry = {
