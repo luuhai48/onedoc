@@ -6,6 +6,21 @@ import { defineConfig } from 'vite';
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: (id) => {
+          if (id?.includes('node_modules')) {
+            return id.match(/node_modules\/(.*?)(\/|$)/)?.[1];
+          }
+          return null;
+        },
+      },
+    },
+    commonjsOptions: {
+      transformMixedEsModules: true,
+    },
+  },
   plugins: [
     tailwindcss(),
     tanstackRouter({

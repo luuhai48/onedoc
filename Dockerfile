@@ -17,7 +17,7 @@ COPY packages/worker/package.json /app/packages/worker/package.json
 COPY packages/web/package.json /app/packages/web/package.json
 
 # Install dependencies
-RUN bun install --frozen-lockfile
+RUN bun install --frozen-lockfile --ignore-scripts
 
 FROM deps AS build-backend
 # Copy the rest of the project
@@ -28,6 +28,7 @@ RUN ./scripts/build-packages.sh api worker
 
 
 FROM deps AS build-web
+COPY packages/shared/ /app/packages/shared/
 COPY packages/web/ /app/packages/web/
 RUN bun --cwd=packages/web run build
 

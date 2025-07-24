@@ -4,13 +4,32 @@ services:
     container_name: local_mongo
     restart: always
     ports:
-      - 27017:27017
+      - 27018:27017
     environment:
       - MONGO_INITDB_ROOT_USERNAME=admin
       - MONGO_INITDB_ROOT_PASSWORD=Abcd1234
       - MONGO_INITDB_DATABASE=onedoc
     volumes:
       - localmongo:/data/db
+
+  api:
+    image: onedoc:latest
+    build: .
+    ports:
+      - 3000:3000
+    env_file:
+      - .env
+    depends_on:
+      - mongodb
+
+  worker:
+    image: onedoc:latest
+    build: .
+    command: ["bun", "run", "./output/worker/index.js"]
+    env_file:
+      - .env
+    depends_on:
+      - mongodb
 
 volumes:
   localmongo:
