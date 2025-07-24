@@ -1,5 +1,7 @@
 import { SwaggerService } from '../services/swagger';
-import { SwaggerDao } from '../services/swagger/swaggerEndpoint.dao';
+import { SwaggerEndpointDao } from '../services/swagger/swaggerEndpoint.dao';
+import { SwaggerPatchDao } from '../services/swagger/swaggerPatch.dao';
+import { SwaggerVersionDao } from '../services/swagger/swaggerVersion.dao';
 import { MongoService } from './mongo';
 
 type ServiceRegistry = {
@@ -18,9 +20,11 @@ export class Container {
   private initializeServices() {
     const mongoService = MongoService.getInstance();
 
-    const swaggerDao = new SwaggerDao(mongoService.getConnection());
+    const swaggerEndpointDao = new SwaggerEndpointDao(mongoService.getConnection());
+    const swaggerVersionDao = new SwaggerVersionDao(mongoService.getConnection());
+    const swaggerPatchDao = new SwaggerPatchDao(mongoService.getConnection());
 
-    this.services.set('swaggerService', new SwaggerService(swaggerDao));
+    this.services.set('swaggerService', new SwaggerService(swaggerEndpointDao, swaggerVersionDao, swaggerPatchDao));
   }
 
   public static getInstance(): Container {

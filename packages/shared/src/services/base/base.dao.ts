@@ -156,7 +156,6 @@ export abstract class BaseDao<T> {
       .populate<PopulatePaths>(populate as PopulateOptions | (PopulateOptions | string)[]);
   }
 
-  // biome-ignore lint/suspicious/noExplicitAny: <ok>
   async aggregate<R = any>(args: AggregateArgs) {
     const { pipeline } = args;
     return this.model.aggregate<R>(pipeline).catch((e) => {
@@ -255,8 +254,6 @@ export abstract class BaseDao<T> {
   }
 
   async bulkWrite(
-    // biome-ignore lint/suspicious/noExplicitAny: <ok>
-    // biome-ignore lint/complexity/noBannedTypes: <ok>
     writes: Array<AnyBulkWriteOperation<T extends Document ? any : T extends {} ? T : any>>,
     options?: MongooseBulkWriteOptions,
   ) {

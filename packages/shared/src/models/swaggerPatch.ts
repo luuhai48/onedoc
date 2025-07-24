@@ -1,23 +1,21 @@
 import { type Connection, type Document, Schema } from 'mongoose';
 
-// biome-ignore lint/suspicious/noExplicitAny: <ok>
-export interface SwaggerPatch extends Document<any> {
+export interface ISwaggerPatch extends Document<any> {
   endpointId: Schema.Types.ObjectId;
-  // biome-ignore lint/suspicious/noExplicitAny: <ok>
   patch: Record<string, any>;
   hash: string;
   createdAt: Date;
   updatedAt: Date;
 }
 
-export const SwaggerPatchSchema = new Schema<SwaggerPatch>(
+export const SwaggerPatchSchema = new Schema<ISwaggerPatch>(
   {
     endpointId: { type: Schema.Types.ObjectId, required: true },
     patch: { type: Object, required: true },
     hash: { type: String, required: true },
   },
-  { timestamps: true },
+  { timestamps: true, versionKey: false },
 );
 
 export const getSwaggerPatchModel = (conn: Connection) =>
-  conn.model<SwaggerPatch>('swagger_patches', SwaggerPatchSchema, 'swagger_patches');
+  conn.model<ISwaggerPatch>('swagger_patches', SwaggerPatchSchema, 'swagger_patches');

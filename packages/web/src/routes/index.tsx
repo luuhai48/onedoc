@@ -20,23 +20,23 @@ function RouteComponent() {
   });
 
   const options = useMemo(() => {
-    return data?.data?.map((url) => ({ value: url._id, label: url.name })) || [];
+    return data?.map((url) => ({ value: url._id, label: url.name })) || [];
   }, [data]);
 
   const selectedOption = useMemo(() => {
-    return data?.data?.find((url) => url._id === value);
+    return data?.find((url) => url._id === value);
   }, [data, value]);
 
   useEffect(() => {
-    if (data?.data?.length && !value?.trim()?.length) {
-      setValue(data.data[0]._id);
+    if (data?.length && !value?.trim()?.length) {
+      setValue(data[0]._id);
     }
   }, [data, setValue, value]);
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
-  if (!data?.data?.length) {
+  if (!data?.length) {
     return (
       <div className="flex flex-col items-center justify-center h-full py-8">
         <h1 className="text-2xl font-bold">No endpoints found</h1>

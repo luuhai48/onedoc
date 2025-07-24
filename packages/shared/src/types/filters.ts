@@ -1,10 +1,17 @@
+import { Types } from 'mongoose';
 import { z } from 'zod';
 
 export const PaginationFilterSchema = z.object({
-  page: z.number().min(1).default(1),
-  limit: z.number().min(1).max(100).default(10),
-  sort: z.string().default('_id'),
-  order: z.enum(['asc', 'desc']).default('desc'),
+  sort: z.string().default('_id').optional(),
+  order: z.enum(['asc', 'desc']).default('desc').optional(),
+  afterId: z
+    .string()
+    .refine((val) => Types.ObjectId.isValid(val), { message: 'Invalid objectId' })
+    .optional(),
+  beforeId: z
+    .string()
+    .refine((val) => Types.ObjectId.isValid(val), { message: 'Invalid objectId' })
+    .optional(),
 });
 
 export type PaginationFilter = z.infer<typeof PaginationFilterSchema>;

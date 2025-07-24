@@ -4,3 +4,4 @@ export * from './libs/logger';
 export * from './libs/mongo';
 
 export * from './types';
+export * from './utils';
